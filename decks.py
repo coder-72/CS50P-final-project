@@ -3,10 +3,10 @@ from cards import Deck
 class BlackjackDeck(Deck):
     def __init__(self):
         super().__init__()
-        self.suits.update({"H" : self.Suit("Hearts", "H", "r")})
-        self.suits.update({"D": self.Suit("Diamonds", "D", "r")})
-        self.suits.update({"C": self.Suit("Clubs", "C", "b")})
-        self.suits.update({"S": self.Suit("Spades", "S", "b")})
+        self.suits.update({"H" : self.Suit("Hearts", "H", "r", chr(9829),2)})
+        self.suits.update({"D": self.Suit("Diamonds", "D", "r", chr(9830), 4)})
+        self.suits.update({"C": self.Suit("Clubs", "C", "b", chr(9827),6)})
+        self.suits.update({"S": self.Suit("Spades", "S", "b", chr(9824), 8)})
 
         self.values.update({"A" : self.Value("A", "Ace", [1, 11])})
         self.values.update({"2": self.Value("2", "Two", [2])})
@@ -32,10 +32,10 @@ class BlackjackDeck(Deck):
 class GenericDeck(Deck):
     def __init__(self):
         super().__init__()
-        self.suits.update({"H" : self.Suit("Hearts", "H", "r")})
-        self.suits.update({"D": self.Suit("Diamonds", "D", "r")})
-        self.suits.update({"C": self.Suit("Clubs", "C", "b")})
-        self.suits.update({"S": self.Suit("Spades", "S", "b")})
+        self.suits.update({"H" : self.Suit("Hearts", "H", "r", chr(9829),2)})
+        self.suits.update({"D": self.Suit("Diamonds", "D", "r", chr(9830), 4)})
+        self.suits.update({"C": self.Suit("Clubs", "C", "b", chr(9827),6)})
+        self.suits.update({"S": self.Suit("Spades", "S", "b", chr(9824), 8)})
 
         self.values.update({"A" : self.Value("A", "Ace", [1, 14])})
         self.values.update({"2": self.Value("2", "Two", [2])})

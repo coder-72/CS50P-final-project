@@ -1,4 +1,6 @@
 from __future__ import annotations
+import random
+from typing import Callable
 
 """
 :Date: 2025-05-04
@@ -7,7 +9,8 @@ from __future__ import annotations
     - coder-72
     """
 
-
+def sort_key(item : Deck.Card) -> int:
+    return item.value.num_vals[0] * 10 + item.suit.priority
 
 
 class Deck:
@@ -22,23 +25,62 @@ class Deck:
         self.cards = []
         self.suits = {}
         self.values = {}
+    def shuffle(self) -> None:
+        """
+        shuffles deck of cards
+
+        :return: None
+        """
+        #shuffle cards using random module
+        random.shuffle(self.cards)
+
+    def random_cards(self, num : int = 1) -> list:
+        """
+
+        :param num: number of cards to pick
+        :return: list of cards
+        :rtype: list[Deck.Card]
+        """
+        cards = []
+        for i in range(0, num):
+            pos = random.randrange(0, len(self.cards))
+            cards.append(self.cards[pos])
+            self.cards.pop(pos)
+        return cards
+
+    def sort(self, key : Callable[[Card], int] = sort_key) -> None:
+        """
+
+        :param key: function to assign value to each card in order to sort
+        :return: None
+        """
+        self.cards.sort(key=key)
 
 
 
     class Suit:
 
-        def __init__(self, name: str, symbol: str, colour: str) -> None:
+        def __init__(self, name: str, symbol: str, colour: str, asciistr : str, priority : int = 0) -> None:
             """
             initiate and create a new suit
 
             :param name: name of suit
+            :type name: str
             :param symbol: symbol to display suit
+            :type symbol: str
             :param colour: colour of suit
+            :type colour: str
+            :param asciistr: symbol in ascii for suit
+            :type asciistr: str
+            :param priority: priority of suit when using sort function
+            :type priority: int, optional
             """
 
             self.name = name
             self.symbol = symbol
             self.colour = colour
+            self.priority = priority
+            self.ascii = asciistr
 
         def __str__(self) -> str:
             """
@@ -91,7 +133,7 @@ class Deck:
 
 
     class Card:
-        def __init__(self, value: Deck.Value, suit: Deck.Suit, ascii: str = ""):
+        def __init__(self, value: Deck.Value, suit: Deck.Suit):
             """
             Instanciate a new card
 
@@ -104,21 +146,58 @@ class Deck:
             """
             self.value = value
             self.suit = suit
-            self.ascii = ascii
 
-        def __str__(self):
-            return self.ascii
+        def get_ascii(self):
+            """
+            creates ascii art for card object
+
+            :return: ascii art form of card
+            :rtype: str
+            """
+            ascii = """
+ ____ 
+|{2:<2}  |
+| {1:<2} |
+|__{0:<2}|
+""".format("_" + self.value.symbol  if len(self.value.symbol) < 2 else self.value.symbol, self.suit.ascii, self.value.symbol)
+            return ascii
+
+        def __str__(self) -> str:
+            """
+
+            :return: string for obj e.g. when printing so human readable
+            :rtype: str
+            """
+            return self.get_ascii()
 
         @property
         def value(self) -> Deck.Value:
+            """
+            when trying to access value attribute returns private value attribute instead
+
+            :return: value object of card
+            :rtype: Deck.Value
+            """
             return self._value
 
         @property
         def suit(self) -> Deck.Suit:
+            """
+            when accessing suit attribute returns private attribute suit attribute instead
+
+            :return: suit object for card
+            :rtype: Deck.Suit
+            """
             return self._suit
 
         @value.setter
         def value(self, obj) -> None:
+            """
+            checks obj is of type Deck.Value
+
+            :param obj: object assigning value to
+            :return: None
+            """
             if isinstance(obj, Deck.Value):
                 self._value = obj
             else:
@@ -127,13 +206,15 @@ class Deck:
 
         @suit.setter
         def suit(self, obj) -> None:
+            """
+            checks obj is of type Deck.Suit
+
+            :param obj: object setting suit to
+            :return:
+            """
             if isinstance(obj, Deck.Suit):
                 self._suit = obj
             else:
                 message = f"{obj} is not of type Suit"
                 raise TypeError(message)
 
-
-
-
-Deck()
